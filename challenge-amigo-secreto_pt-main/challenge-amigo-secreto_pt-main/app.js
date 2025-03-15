@@ -1,38 +1,40 @@
 let amigos = [];
 
 function adicionarAmigo() {
-  let nomeAmigo = document.getElementById("amigo").value;
+  const nomeAmigo = document.getElementById("amigo").value.trim();
 
-  if (nomeAmigo.trim() === "") {
+  if (!nomeAmigo) {
     alert("Calma aí alecrim dourado, insira um nome válido!");
-  } else {
-    amigos.push(nomeAmigo);
-    document.querySelector("#amigo").value = "";
-    mostrarListaAmigo();
+    return;
   }
+
+  amigos.push(nomeAmigo);
+  document.getElementById("amigo").value = "";
+  atualizarListaAmigos();
 }
 
-function mostrarListaAmigo() {
-  let listaAmigos = document.querySelector("#listaAmigos");
+function atualizarListaAmigos() {
+  const listaAmigos = document.getElementById("listaAmigos");
   listaAmigos.innerHTML = "";
 
-  for (let index = 0; index < amigos.length; index++) {
-    const element = amigos[index];
-
-    let listaHTML = document.createElement("li");
-    listaHTML.textContent = element;
-    listaAmigos.appendChild(listaHTML);
-  }
+  amigos.forEach(amigo => {
+    const itemLista = document.createElement("li");
+    itemLista.textContent = amigo;
+    listaAmigos.appendChild(itemLista);
+  });
 }
 
-
 function sortearAmigo() {
-  let quantidadeAmigos = amigos.length;
-  if (quantidadeAmigos === 0) {
+  if (amigos.length === 0) {
     alert("Nasceu de 7 meses foi? Antes de sortear, adicione pelo menos um nome para a mágica acontecer!");
-  } else {
-    let indiceAmigo = Math.floor(Math.random() * quantidadeAmigos);
-    let resultadoHTML = document.querySelector("#resultado");
-    resultadoHTML.innerHTML = amigos[indiceAmigo];
+    return;
   }
+
+  const amigoSorteado = escolherAmigoAleatorio(amigos);
+  document.getElementById("resultado").textContent = amigoSorteado;
+}
+
+function escolherAmigoAleatorio(listaAmigos) {
+  const indiceAleatorio = Math.floor(Math.random() * listaAmigos.length);
+  return listaAmigos[indiceAleatorio];
 }
